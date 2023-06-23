@@ -1,8 +1,8 @@
 {
-  "name": "simplefolio",
-  "version": "1.0.1",
+  "name": "portfolio",
+  "version": "1.0.0",
   "private": "true",
-  "description": "A clean, beautiful and responsive portfolio template for Developers!",
+  "description": "A clean, beautiful and responsive portfolio for Haidar Ibo!",
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
@@ -10,17 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cobiwave/simplefolio"
+    "url": "git+https://github.com/Ismail099/portfolio"
   },
   "keywords": [],
-  "author": "Jacobo Martinez",
+  "author": "Haidar Ibo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cobiwave/simplefolio/issues"
+    "url": "https://github.com/Ismail099/portfolio/issues"
   },
-  "homepage": "https://github.com/cobiwave/simplefolio#readme",
+  "homepage": "https://github.com/Ismail099/portfolio#readme",
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.8.2",
+    "@parcel/transformer-sass": "^2.9.2",
     "parcel": "^2.8.2",
     "prettier": "^2.8.1"
   },
