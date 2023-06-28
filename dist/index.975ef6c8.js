@@ -581,10 +581,12 @@ var _tiltAnimation = require("./scripts/tiltAnimation");
 var _tiltAnimationDefault = parcelHelpers.interopDefault(_tiltAnimation);
 var _scrollRevealConfig = require("./data/scrollRevealConfig");
 var _stylesCss = require("status-indicator/styles.css");
+var _analytics = require("@vercel/analytics");
+(0, _analytics.inject)();
 (0, _scrollRevealDefault.default)((0, _scrollRevealConfig.targetElements), (0, _scrollRevealConfig.defaultProps));
 (0, _tiltAnimationDefault.default)();
 
-},{"./scripts/scrollReveal":"54rka","./scripts/tiltAnimation":"72kAb","./data/scrollRevealConfig":"5aORV","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","status-indicator/styles.css":"grWjQ"}],"54rka":[function(require,module,exports) {
+},{"./scripts/scrollReveal":"54rka","./scripts/tiltAnimation":"72kAb","./data/scrollRevealConfig":"5aORV","status-indicator/styles.css":"grWjQ","@vercel/analytics":"l4OoA","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"54rka":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>initScrollReveal);
@@ -1064,6 +1066,110 @@ const targetElements = [
     }
 ];
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"grWjQ":[function() {},{}]},["igKGj","8lqZg"], "8lqZg", "parcelRequire2041")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"grWjQ":[function() {},{}],"l4OoA":[function(require,module,exports) {
+// package.json
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>generic_default);
+parcelHelpers.export(exports, "inject", ()=>inject);
+parcelHelpers.export(exports, "track", ()=>track);
+var name = "@vercel/analytics";
+var version = "1.0.1";
+// src/queue.ts
+var initQueue = ()=>{
+    if (window.va) return;
+    window.va = function a(...params) {
+        (window.vaq = window.vaq || []).push(params);
+    };
+};
+// src/utils.ts
+function isBrowser() {
+    return typeof window !== "undefined";
+}
+function detectEnvironment() {
+    try {
+        const env = "development";
+        if (env === "development" || env === "test") return "development";
+    } catch (e) {}
+    return "production";
+}
+function setMode(mode = "auto") {
+    if (mode === "auto") {
+        window.vam = detectEnvironment();
+        return;
+    }
+    window.vam = mode;
+}
+function getMode() {
+    return window.vam || "production";
+}
+function isProduction() {
+    return getMode() === "production";
+}
+function isDevelopment() {
+    return getMode() === "development";
+}
+function removeKey(key, { [key]: _ , ...rest }) {
+    return rest;
+}
+function parseProperties(properties, options) {
+    let props = properties;
+    const errorProperties = [];
+    for (const [key, value] of Object.entries(properties))if (typeof value === "object" && value !== null) {
+        if (options.strip) props = removeKey(key, props);
+        else errorProperties.push(key);
+    }
+    if (errorProperties.length > 0 && !options.strip) throw Error(`The following properties are not valid: ${errorProperties.join(", ")}. Only strings, numbers, booleans, and null are allowed.`);
+    return props;
+}
+// src/generic.ts
+function inject(props = {
+    debug: true
+}) {
+    var _a;
+    if (!isBrowser()) return;
+    setMode(props.mode);
+    initQueue();
+    if (props.beforeSend) (_a = window.va) == null || _a.call(window, "beforeSend", props.beforeSend);
+    const src = isDevelopment() ? "https://va.vercel-scripts.com/v1/script.debug.js" : "/_vercel/insights/script.js";
+    if (document.head.querySelector(`script[src*="${src}"]`)) return;
+    const script = document.createElement("script");
+    script.src = src;
+    script.defer = true;
+    script.setAttribute("data-sdkn", name);
+    script.setAttribute("data-sdkv", version);
+    if (isDevelopment() && props.debug === false) script.setAttribute("data-debug", "false");
+    document.head.appendChild(script);
+}
+function track(name2, properties) {
+    var _a, _b;
+    if (!isBrowser()) {
+        console.warn("[Vercel Web Analytics] Server-side execution of `track()` is currently not supported.");
+        return;
+    }
+    if (!properties) {
+        (_a = window.va) == null || _a.call(window, "event", {
+            name: name2
+        });
+        return;
+    }
+    try {
+        const props = parseProperties(properties, {
+            strip: isProduction()
+        });
+        (_b = window.va) == null || _b.call(window, "event", {
+            name: name2,
+            data: props
+        });
+    } catch (err) {
+        if (err instanceof Error && isDevelopment()) console.error(err);
+    }
+}
+var generic_default = {
+    inject,
+    track
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["igKGj","8lqZg"], "8lqZg", "parcelRequire2041")
 
 //# sourceMappingURL=index.975ef6c8.js.map
